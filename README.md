@@ -1,4 +1,4 @@
-# Stylist AI — MVP 0.1
+# Stylist AI — Demo funcional
 
 Consultoria de imagem assistida por IA + descoberta de produtos e profissionais.
 
@@ -20,7 +20,15 @@ Fotos guiadas → análise explicável de linhas → identidade de estilo → gu
 npm install
 npm run dev
 
-## Próximo passo
-Implementar upload real, perguntas de desempate e motor de análise com hipóteses e confiança.
+## Demo atual
+- navegação funcional em todas as áreas;
+- fluxo consentido de fotos frente/perfil/costas com prévia local;
+- questionário de identidade e resultado demonstrativo;
+- guia pessoal, looks, paleta, Radar de Compras e profissionais;
+- persistência local da jornada;
+- CI e deploy automático no GitHub Pages.
+
+## Limites da demo
+As fotos ficam somente no navegador. A análise exibida é demonstrativa; o motor real de visão/IA, autenticação, banco, pagamentos e marketplace entram na próxima fase.
 
 Stylist AI é nome provisório.
