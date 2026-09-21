@@ -13,6 +13,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: https://mdmmhgzpjsaeqzoecfgr.supabase.co
+      # Publishable browser key; access remains restricted by RLS policies.
+      VITE_SUPABASE_ANON_KEY: sb_publishable_tsW1qPAKwGXhW0mEG86wJg_MucQIsQK
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
