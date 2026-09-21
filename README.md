@@ -28,7 +28,16 @@ npm run dev
 - persistência local da jornada;
 - CI e deploy automático no GitHub Pages.
 
-## Limites da demo
-As fotos ficam somente no navegador. A análise exibida é demonstrativa; o motor real de visão/IA, autenticação, banco, pagamentos e marketplace entram na próxima fase.
+## Beta com Área da Cliente
+- cadastro, login, logout, sessão persistente e recuperação de senha via Supabase Auth;
+- perfis, jornadas e feedback isolados por usuária com Row Level Security;
+- consentimentos essenciais e de marketing separados;
+- painel da cliente e formulário de feedback das testadoras;
+- preparação para fotos privadas no Supabase Storage.
+
+Para ativar o backend, execute `supabase/schema.sql` no projeto Supabase e configure as variáveis de `.env.example` no ambiente de publicação.
+
+## Limites atuais
+A análise exibida continua demonstrativa e baseada nas respostas; as fotos ainda não são interpretadas por IA. Pagamentos, produtos reais e profissionais verificados não estão ativos e são identificados como demonstração.
 
 Stylist AI é nome provisório.
