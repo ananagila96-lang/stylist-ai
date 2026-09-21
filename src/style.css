@@ -941,3 +941,136 @@ button:focus-visible { outline: 3px solid #86d7b8; outline-offset: 2px; }
 .keywordRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .keywordRow span { padding: 7px 11px; border-radius: 999px; background: #ffffff1c; border: 1px solid #ffffff35; color: #ecfff6; font-size: 12px; font-weight: 700; }
 .bottomNav button:hover { color: #167354; }
+
+/* Vitrine pública: apresenta o produto antes de pedir cadastro */
+.publicSite {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #fcfffd;
+  color: #17382d;
+}
+.publicNav,
+.publicHero,
+.publicSection,
+.publicBand,
+.publicShowcase,
+.publicCta,
+.publicSite footer {
+  width: min(1120px, calc(100% - 48px));
+  margin-inline: auto;
+}
+.publicNav {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.publicNav button,
+.publicSite footer button,
+.backToSite {
+  border: 0;
+  background: transparent;
+  color: #125c45;
+  font-weight: 700;
+}
+.publicNav button {
+  border: 1px solid #b9d9cc;
+  border-radius: 999px;
+  padding: 10px 20px;
+}
+.publicHero {
+  min-height: 610px;
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 80px;
+  align-items: center;
+  padding: 68px 0 88px;
+}
+.publicHero h1,
+.publicSection h2,
+.publicBand h2,
+.publicCta h2 {
+  font-family: "Playfair Display", serif;
+  margin: 13px 0 20px;
+}
+.publicHero h1 { font-size: clamp(48px, 6vw, 78px); line-height: .98; letter-spacing: -2.8px; }
+.publicHero > div:first-child > p { max-width: 650px; color: #587066; font-size: 18px; line-height: 1.65; }
+.publicHero > div:first-child > small { display: block; margin-top: 18px; color: #71857c; }
+.heroActions { display: flex; align-items: center; gap: 25px; margin-top: 28px; }
+.heroActions .primary,
+.publicCta .primary { width: auto; margin: 0; padding-inline: 24px; }
+.heroActions a { color: #125c45; font-weight: 700; text-underline-offset: 5px; }
+.heroPreview {
+  position: relative;
+  padding: 55px 44px;
+  border-radius: 36px 36px 120px 36px;
+  background: linear-gradient(145deg, #0d4b38, #197556);
+  color: white;
+  box-shadow: 0 34px 80px #0d4b3830;
+}
+.heroPreview:before { content: ""; position: absolute; inset: 18px; border: 1px solid #ffffff24; border-radius: 26px 26px 105px 26px; pointer-events: none; }
+.heroPreview > span { color: #a8eccf; font-size: 11px; letter-spacing: 1.5px; font-weight: 800; }
+.heroPreview h2 { font: 700 43px/1.05 "Playfair Display", serif; margin: 18px 0; }
+.heroPreview p { color: #d8f5e8; line-height: 1.55; }
+.heroPreview div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.heroPreview i { font-style: normal; border: 1px solid #ffffff42; border-radius: 999px; padding: 7px 12px; font-size: 12px; }
+.publicSection { padding: 100px 0; text-align: center; }
+.publicSection > h2 { font-size: clamp(38px, 5vw, 58px); }
+.publicSection > p { color: #687b73; max-width: 600px; margin: 0 auto 46px; line-height: 1.6; }
+.publicTools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: left; }
+.publicTools article { min-height: 190px; padding: 27px; border: 1px solid #d9ebe3; border-radius: 23px; background: white; }
+.publicTools svg { width: 27px; color: #167354; margin-bottom: 28px; }
+.publicTools b { display: block; font-size: 17px; }
+.publicTools p { color: #718078; font-size: 14px; line-height: 1.5; }
+.publicBand { width: 100%; max-width: none; padding: 90px max(24px, calc((100% - 1120px) / 2)); background: #123f32; color: white; display: grid; grid-template-columns: .8fr 1.2fr; gap: 80px; }
+.publicBand .pill { color: #9be4c5; }
+.publicBand h2 { font-size: 45px; line-height: 1.05; }
+.publicBand ol { padding: 0; margin: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.publicBand li { display: flex; gap: 14px; align-items: flex-start; padding-top: 20px; border-top: 1px solid #ffffff30; line-height: 1.45; }
+.publicBand li b { color: #9be4c5; }
+.publicShowcase { padding: 100px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.publicShowcase article { padding: 34px; border-radius: 28px; background: #edf8f3; }
+.publicShowcase article:nth-child(2) { background: #f3f0e8; }
+.publicShowcase article:nth-child(3) { background: #e8f1f4; }
+.publicShowcase svg { width: 34px; height: 34px; margin-bottom: 42px; color: #167354; }
+.publicShowcase h3 { font: 700 27px/1.12 "Playfair Display", serif; margin: 10px 0 15px; }
+.publicShowcase p { color: #62736b; line-height: 1.6; }
+.publicCta { margin-bottom: 80px; padding: 80px 25px; text-align: center; border-radius: 34px; background: linear-gradient(135deg, #dff5eb, #f4faf7); }
+.publicCta > svg { color: #167354; }
+.publicCta h2 { font-size: 44px; }
+.publicCta p { color: #60736a; }
+.publicCta .primary { margin: 28px auto 0; }
+.publicSite footer { padding: 28px 0 42px; border-top: 1px solid #d9ebe3; display: flex; align-items: center; gap: 25px; }
+.publicSite footer p { color: #718078; flex: 1; }
+.backToSite { display: flex; align-items: center; gap: 7px; margin: 0 0 26px; padding: 0; }
+.backToSite svg { width: 18px; }
+
+@media (max-width: 760px) {
+  body { padding: 0; }
+  .publicNav,
+  .publicHero,
+  .publicSection,
+  .publicShowcase,
+  .publicCta,
+  .publicSite footer { width: min(100% - 32px, 1120px); }
+  .publicNav { min-height: 68px; }
+  .publicHero { min-height: auto; grid-template-columns: 1fr; gap: 45px; padding: 58px 0 70px; }
+  .publicHero h1 { font-size: 49px; letter-spacing: -1.8px; }
+  .publicHero > div:first-child > p { font-size: 16px; }
+  .heroActions { align-items: stretch; flex-direction: column; gap: 18px; }
+  .heroActions .primary { width: 100%; }
+  .heroActions a { text-align: center; }
+  .heroPreview { padding: 42px 30px; border-radius: 28px 28px 80px 28px; }
+  .heroPreview h2 { font-size: 37px; }
+  .publicSection { padding: 75px 0; }
+  .publicTools,
+  .publicShowcase { grid-template-columns: 1fr; }
+  .publicTools article { min-height: 160px; }
+  .publicBand { padding: 70px 24px; grid-template-columns: 1fr; gap: 35px; }
+  .publicBand ol { grid-template-columns: 1fr; }
+  .publicShowcase { padding: 75px 0; }
+  .publicCta { margin-bottom: 55px; padding-block: 60px; }
+  .publicCta h2 { font-size: 37px; }
+  .publicSite footer { align-items: flex-start; flex-direction: column; }
+  .publicSite footer p { margin: 0; }
+}
