@@ -870,3 +870,44 @@ button {
 .evidence svg { width: 17px; flex: none; }
 .evidence { background: #443b36; color: #e7ddd6; margin: 20px 0 0; }
 .profileDetail { font-size: 12px; color: #6f6660; line-height: 1.4; margin: 9px 0 0; }
+
+/* Identidade visual v0.2: fresca, moderna, verde e branca */
+:root { color: #17382d; background: #eaf4ef; }
+.app { background: #fcfffd; box-shadow: 0 0 60px #0f513218; }
+.logo i,
+.headerMark,
+.eyebrow,
+.pill,
+.feature > svg,
+.textButton,
+.privacy svg,
+.note svg,
+.searchBar svg,
+.dataPanel > svg { color: #167354; }
+.avatar,
+.primary,
+.chips button.active { background: #125c45; }
+.primary:hover { background: #0c4937; }
+.primary:focus-visible,
+.secondary:focus-visible,
+button:focus-visible { outline: 3px solid #86d7b8; outline-offset: 2px; }
+.feature,
+.card,
+.guideList article,
+.paletteCard,
+.productGrid article,
+.proList article,
+.dataPanel { border-color: #d9ebe3; }
+.feature:hover { box-shadow: 0 14px 34px #12604416; border-color: #a9d8c4; }
+.banner { background: linear-gradient(135deg, #e1f5eb, #f5fbf8); }
+.resultHero { background: linear-gradient(145deg, #0d4b38, #197556); }
+.resultHero .pill { color: #a8eccf; }
+.evidence { background: #ffffff18; color: #e9fff5; }
+.privacy,
+.note,
+.commercialNote { background: #edf8f3; }
+.options button.selected { border-color: #167354; background: #e7f7ef; }
+.stepLine i { background: #167354; }
+.keywordRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.keywordRow span { padding: 7px 11px; border-radius: 999px; background: #ffffff1c; border: 1px solid #ffffff35; color: #ecfff6; font-size: 12px; font-weight: 700; }
+.bottomNav button:hover { color: #167354; }
