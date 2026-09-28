@@ -21,3 +21,9 @@ export async function getPrivatePhotoUrl(path) {
   if (error) throw error;
   return data.signedUrl;
 }
+
+export async function deletePrivatePhoto(path) {
+  if (!supabase) throw new Error('Backend não configurado.');
+  const { error } = await supabase.storage.from('private-photos').remove([path]);
+  if (error) throw error;
+}
