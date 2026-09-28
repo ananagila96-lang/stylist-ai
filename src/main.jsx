@@ -3,6 +3,7 @@ import{createRoot}from'react-dom/client';
 import{ArrowLeft,BookOpen,Camera,Check,ChevronRight,Heart,Home,ImagePlus,Info,LogOut,MapPin,MessageSquare,Palette,RefreshCw,Search,Settings,ShieldCheck,ShoppingBag,Sparkles,Star,Trash2,UserRound,WandSparkles}from'lucide-react';
 import'./style.css';
 import{backendReady,loadJourney,saveJourney,supabase}from'./lib/supabase';
+import{deletePrivatePhoto,getPrivatePhotoUrl,uploadPrivatePhoto}from'./lib/privatePhotos';
 
 const modules=[
  {id:'analysis',title:'Analisar minhas linhas',desc:'Fotos guiadas + análise de linhas corporais',icon:Camera},
@@ -68,7 +69,7 @@ function App(){
  return <Shell screen={screen} setScreen={setScreen}>
   {storageError&&<div className="errorBanner" role="alert">{storageError}</div>}
   {screen==='home'&&<HomePage setScreen={setScreen} profile={profile} eraseData={eraseData}/>}
-  {screen==='analysis'&&<Analysis profile={profile} setProfile={setProfile} setScreen={setScreen}/>}
+  {screen==='analysis'&&<Analysis session={session} profile={profile} setProfile={setProfile} setScreen={setScreen}/>}
   {screen==='identity'&&<Identity profile={profile} setProfile={setProfile} setScreen={setScreen}/>}
   {screen==='result'&&<Result profile={profile} setScreen={setScreen}/>}
   {screen==='guide'&&<Guide profile={profile} setScreen={setScreen}/>}
@@ -92,19 +93,19 @@ function HomePage({setScreen,profile,eraseData}){
  </>
 }
 
-function Analysis({profile,setProfile,setScreen}){
+function Analysis({session,profile,setProfile,setScreen}){
  const[step,setStep]=useState(0);const[consent,setConsent]=useState(Boolean(profile.consentAt));const[photoError,setPhotoError]=useState('');const positions=['frente','perfil','costas'];
- const setPhoto=async(position,file)=>{if(!file)return;setPhotoError('');try{const photo=await compressPhoto(file);setProfile(p=>({...p,photos:{...p.photos,[position]:photo}}))}catch(error){setPhotoError(error.message)}};
- const remove=position=>setProfile(p=>({...p,photos:{...p.photos,[position]:undefined}}));
- if(step===0)return <section className="card introCard"><span className="pill">ANÁLISE GUIADA</span><h1>Vamos conhecer suas linhas.</h1><p>Você adiciona três fotos e responde perguntas rápidas. A demo cria uma hipótese de estilo — não uma avaliação médica nem um julgamento do seu corpo.</p><div className="privacy"><Camera/><div><b>Suas fotos são suas</b><small>Nesta demo, elas ficam somente neste navegador, são comprimidas antes do armazenamento e podem ser apagadas na tela inicial.</small></div></div><label className="consent"><input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)}/><span>Autorizo o uso local das fotos para esta demonstração e sei que posso apagar tudo quando quiser.</span></label><button className="primary" disabled={!consent} onClick={()=>{setProfile(p=>({...p,consentAt:new Date().toISOString()}));setStep(1)}}>Começar análise <ChevronRight/></button></section>;
+ const setPhoto=async(position,file)=>{if(!file)return;setPhotoError('');try{if(backendReady&&session){const path=await uploadPrivatePhoto(session.user.id,position,file);const preview=await getPrivatePhotoUrl(path);setProfile(p=>({...p,photos:{...p.photos,[position]:{path,preview}}}))}else{const photo=await compressPhoto(file);setProfile(p=>({...p,photos:{...p.photos,[position]:photo}}))}}catch(error){setPhotoError(error.message||'Não foi possível enviar a foto.')}};
+ const remove=async position=>{setPhotoError('');try{const current=profile.photos?.[position];if(backendReady&&session&&current?.path)await deletePrivatePhoto(current.path);setProfile(p=>({...p,photos:{...p.photos,[position]:undefined}}))}catch(error){setPhotoError(error.message||'Não foi possível remover a foto.')}};
+ if(step===0)return <section className="card introCard"><span className="pill">ANÁLISE GUIADA</span><h1>Vamos conhecer suas linhas.</h1><p>Você adiciona três fotos e responde perguntas rápidas. A demo cria uma hipótese de estilo — não uma avaliação médica nem um julgamento do seu corpo.</p><div className="privacy"><Camera/><div><b>Suas fotos são suas</b><small>Na beta com conta, elas ficam em armazenamento privado vinculado à sua usuária. No modo local, permanecem somente neste navegador.</small></div></div><label className="consent"><input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)}/><span>Autorizo o tratamento das fotos para realizar minha análise e sei que posso apagá-las quando quiser.</span></label><button className="primary" disabled={!consent} onClick={()=>{setProfile(p=>({...p,consentAt:new Date().toISOString()}));setStep(1)}}>Começar análise <ChevronRight/></button></section>;
  if(step===4)return <Identity profile={profile} setProfile={setProfile} setScreen={setScreen}/>;
  const position=positions[step-1],photo=profile.photos[position];
- return <section className="card photoCard"><div className="stepLine"><span>ETAPA {step} DE 3</span><i style={{width:`${step/3*100}%`}}/></div><h1>Foto de {position}.</h1><p>Corpo inteiro visível, celular reto, roupa próxima ao corpo e iluminação uniforme.</p><label className={'photoDrop '+(photo?'hasPhoto':'')}>{photo?<img src={photo} alt={`Prévia de ${position}`}/>:<><ImagePlus/><b>Adicionar foto</b><small>JPG, PNG ou imagem do celular · até 15 MB</small></>}<input type="file" accept="image/*" onChange={e=>setPhoto(position,e.target.files?.[0])}/></label>{photoError&&<p className="fieldError" role="alert">{photoError}</p>}{photo&&<button className="textButton" onClick={()=>remove(position)}><Trash2/> Remover e escolher outra</button>}<button className="primary" disabled={!photo} onClick={()=>setStep(step+1)}>{step===3?'Responder perguntas':'Próxima foto'} <ChevronRight/></button></section>
+ return <section className="card photoCard"><div className="stepLine"><span>ETAPA {step} DE 3</span><i style={{width:`${step/3*100}%`}}/></div><h1>Foto de {position}.</h1><p>Corpo inteiro visível, celular reto, roupa próxima ao corpo e iluminação uniforme.</p><label className={'photoDrop '+(photo?'hasPhoto':'')}>{photo?<img src={typeof photo==='string'?photo:photo.preview} alt={`Prévia de ${position}`}/>:<><ImagePlus/><b>Adicionar foto</b><small>JPG, PNG ou imagem do celular · até 15 MB</small></>}<input type="file" accept="image/*" onChange={e=>setPhoto(position,e.target.files?.[0])}/></label>{photoError&&<p className="fieldError" role="alert">{photoError}</p>}{photo&&<button className="textButton" onClick={()=>remove(position)}><Trash2/> Remover e escolher outra</button>}<button className="primary" disabled={!photo} onClick={()=>setStep(step+1)}>{step===3?'Responder perguntas':'Próxima foto'} <ChevronRight/></button></section>
 }
 
 function Identity({profile,setProfile,setScreen}){
  const[index,setIndex]=useState(profile.answers.length<quiz.length?profile.answers.length:0);const answers=profile.answers||[];
- const choose=answer=>{const next=[...answers];next[index]=answer;setProfile(p=>({...p,answers:next}));if(index<quiz.length-1)setIndex(index+1);else{setProfile(p=>({...p,answers:next,completed:true}));setScreen('result')}};
+ const choose=answer=>{const next=[...answers];next[index]=answer;setProfile(p=>({...p,answers:next}));if(index<quiz.length-1)setIndex(index+1);else{setProfile(p=>({...p,answers:next,completed:true}));if(backendReady)supabase.functions.invoke('send-result-email').catch(()=>{});setScreen('result')}};
  return <section className="card quizCard"><div className="stepLine"><span>PERGUNTA {index+1} DE {quiz.length}</span><i style={{width:`${(index+1)/quiz.length*100}%`}}/></div><span className="eyebrow">IDENTIDADE DE ESTILO</span><h1>{quiz[index].title}</h1><div className="options">{quiz[index].options.map(option=><button key={option} className={answers[index]===option?'selected':''} onClick={()=>choose(option)}><span>{option}</span><ChevronRight/></button>)}</div>{index>0&&<button className="textButton" onClick={()=>setIndex(index-1)}><ArrowLeft/> Voltar uma pergunta</button>}</section>
 }
 
